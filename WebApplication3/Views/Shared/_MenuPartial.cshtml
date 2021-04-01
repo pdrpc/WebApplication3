@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "_MenuPartial";
+}
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Endereços", "Index", "Endereco")</li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Início", "Index", "Home")</li>
+        <li>@Html.ActionLink("Sobre", "About", "Home")</li>
+        <li>@Html.ActionLink("Contato", "Contact", "Home")</li>
+    </ul>
+}
+
