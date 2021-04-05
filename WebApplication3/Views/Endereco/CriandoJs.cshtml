@@ -1,0 +1,136 @@
+﻿@model WebApplication3.Endereco
+<head>
+    @{
+        ViewBag.Title = "CriandoJs";
+    }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            function limpa_formulário_cep() {
+                $("#logradouro").val("");
+                $("#complemento").val("");
+                $("#bairro").val("");
+                $("#localidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+                $("#gia").val("");
+                $("#ddd").val("");
+                $("#siafi").val("");
+            }
+
+            $("#Cep").blur(function () {
+
+                var cep = $(this).val().replace(/\D/g, '');
+
+                if (cep != "") {
+
+                    var validacep = /^[0-9]{8}$/;
+
+                    if (validacep.test(cep)) {
+                        $("#logradouro").val("...");
+                        $("#complemento").val("...");
+                        $("#bairro").val("...");
+                        $("#localidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+                        $("#gia").val("...");
+                        $("#ddd").val("...");
+                        $("#siafi").val("...");
+
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                            if (!("erro" in dados)) {
+                                $("#logradouro").val(dados.logradouro);
+                                $("#complemento").val(dados.complemento);
+                                $("#bairro").val(dados.bairro);
+                                $("#localidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#ibge").val(dados.ibge);
+                                $("#gia").val(dados.gia);
+                                $("#ddd").val(dados.ddd);
+                                $("#siafi").val(dados.siafi);
+                            }
+                            else {
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    }
+                    else {
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                }
+                else {                 
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <h2>Create</h2>
+    <br />
+    <h4>Endereco</h4>
+    @using (Html.BeginForm("CriandoJs", "Endereco"))
+    {
+    <div class="form-group">
+            <label>
+                Cep:
+                @Html.EditorFor(model => model.Cep, new { htmlAttirbutes = new { @class = "cep", @id = "cep", @name = "cep" } })
+            </label>
+            <br />
+            <label>
+                Rua:
+                @Html.EditorFor(model => model.Logradouro, new { htmlAttributes = new { @class = "logradouro", @id = "logradouro", @name = "logradouro" } })
+            </label>
+            <br />
+            <label>
+                Complemento:
+                @Html.EditorFor(model => model.Complemento, new { htmlAttributes = new { @class = "complemento", @id = "complemento", @name = "complemento" } })
+            </label>
+            <br />
+            <label>
+                Bairro:
+                @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "bairro", @id = "bairro", @name = "bairro" } })
+            </label>
+            <br />
+            <label>
+                Cidade:
+                @Html.EditorFor(model => model.Localidade, new { htmlAttributes = new { @class = "localidade", @id = "localidade", @name = "localidade" } })
+            </label>
+            <br />
+            <label>
+                Estado:
+                @Html.EditorFor(model => model.Uf, new { htmlAttributes = new { @class = "uf", @id = "uf", @name = "uf" } })
+            </label>
+            <br />
+            <label>
+                IBGE:
+                @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "ibge", @id = "ibge", @name = "ibge" } })
+            </label>
+            <br />
+            <label>
+                GIA:
+                @Html.EditorFor(model => model.Gia, new { htmlAttributes = new { @class = "gia", @id = "gia", @name = "gia" } })
+            </label>
+            <br />
+            <label>
+                DDD:
+                @Html.EditorFor(model => model.Ddd, new { htmlAttributes = new { @class = "ddd", @id = "ddd", @name = "ddd" } })
+            </label>
+            <br />
+            <label>
+                Siafi:
+                @Html.EditorFor(model => model.Siafi, new { htmlAttributes = new { @class = "siafi", @id = "siafi", @name = "siafi" } })
+            </label>
+            <br />
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+    </div>
+    }
+</body>
